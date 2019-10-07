@@ -15,7 +15,6 @@ class UserController extends Controller
 
     public function set(Request $request)
     {
-//        dd($request->input());
         $request->validate([
             'nombres' => 'required|string',
             'apellidos' => 'required|string',
@@ -26,7 +25,25 @@ class UserController extends Controller
 
         try{
             User::create($request->all());
-            return response()->json('El usuario ha sido creado exitosamente');
+            return response()->json(['status' => true]);
+        }catch (\Exception $e){
+            return response()->json('Ha ocurrido un error al intentar crear el usuario '.$e->getMessage(),500);
+        }
+    }
+
+    public function update($id,Request $request)
+    {
+        $request->validate([
+            'nombres' => 'required|string',
+            'apellidos' => 'required|string',
+            'cedula' => 'required|unique:users,cedula,'.$id,
+            'email' => 'required|email|unique:users,email,'.$id,
+            'telefono' => 'required|unique:users,telefono,'.$id,
+        ]);
+
+        try{
+            User::find($id)->update($request->all());
+            return response()->json(['status' => true]);
         }catch (\Exception $e){
             return response()->json('Ha ocurrido un error al intentar crear el usuario '.$e->getMessage(),500);
         }
