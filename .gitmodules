@@ -1,0 +1,3 @@
+[submodule "pruebaphp_front"]
+	path = pruebaphp_front
+	url = https://github.com/gustavocarrillo/pruebaphp_front.git
